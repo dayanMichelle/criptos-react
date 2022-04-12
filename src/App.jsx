@@ -1,3 +1,4 @@
+import { useState,useEffect } from "react"
 import styled from "@emotion/styled"
 import { Form } from "./components/Form"
 import ImagenCripto from './img/imagen-criptos.png'
@@ -38,13 +39,28 @@ const Imagen = styled.img`
 `
 
 function App() {
-
+  const [coins, setCoins] = useState({});
+  const [result, setResult] = useState({});
+  useEffect(() => {
+    if(Object.keys(coins).length > 0){
+      const quoteCripto = async () => {
+        const { coin, cryptoCoin } = coins;
+        const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCoin}&tsyms=${coin}`
+        const response = await fetch(url)
+        const result = await response.json()
+        setResult(result.DISPLAY[cryptoCoin][coin])
+      }
+      quoteCripto()
+    }
+  },[coins]);
   return (
     <Container>
       <Imagen src={ImagenCripto} alt='Imagen' />
       <div>
         <Heading>Trade Cryptocurrencies Instantly</Heading>
-        <Form />
+        <Form 
+        setCoins={setCoins}
+        />
       </div>
 
     </Container>

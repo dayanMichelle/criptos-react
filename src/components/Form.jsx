@@ -21,7 +21,8 @@ const InputSubmit = styled.input`
     cursor: pointer;
   }
 `
-export const Form = () => {
+export const Form = ({setCoins}) => {
+ 
   const [cryptos, setCryptos] = useState([])
   const [error, setError] = useState(false)
   const [coin, SelectCoins] = useSelectCoins('Chose your coin', coins)
@@ -54,6 +55,10 @@ export const Form = () => {
       return
     }
     setError(false)
+    setCoins({
+      coin,
+      cryptoCoin
+    })
   }
 
   return (
