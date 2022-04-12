@@ -1,7 +1,8 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled"
 import { useSelectCoins } from "../hooks/useSelectCoins";
 import { coins } from "../data/coins";
+import Error from "./Error";
 
 const InputSubmit = styled.input`
   background-color: #9497FF;
@@ -22,6 +23,7 @@ const InputSubmit = styled.input`
 `
 export const Form = () => {
   const [cryptos, setCryptos] = useState([])
+  const [error, setError] = useState(false)
   const [coin, SelectCoins] = useSelectCoins('Chose your coin', coins)
   const [cryptoCoin, SelectCryptoCoin] = useSelectCoins('Chose your crypto', cryptos)
 
@@ -30,25 +32,39 @@ export const Form = () => {
       const url = `https://min-api.cryptocompare.com/data/top/mktcapfull?limit=20&tsym=USD`
       const response = await fetch(url)
       const result = await response.json()
-      const arrayCrypto = result.Data.map(crypto => {{
-        const Object ={
-          id: crypto.CoinInfo.Name,
-          name: crypto.CoinInfo.FullName,
+      const arrayCrypto = result.Data.map(crypto => {
+        {
+          const Object = {
+            id: crypto.CoinInfo.Name,
+            name: crypto.CoinInfo.FullName,
+          }
+          return Object
         }
-        return Object
-      }})
+      })
       setCryptos(arrayCrypto)
     }
     API();
   }, [])
 
 
-  SelectCoins()
+  const handleSubmit = e => {
+    e.preventDefault()
+    if ([coin, cryptoCoin].includes('')) {
+      setError(true)
+      return
+    }
+    setError(false)
+  }
+
   return (
-    <from>
-      <SelectCoins />
-      <SelectCryptoCoin />
-      <InputSubmit type='submit' value='Quote' />
-    </from>
+    <>
+      {error && <Error>All fields are required</Error>}
+      <form onSubmit={handleSubmit}>
+        <SelectCoins />
+        <SelectCryptoCoin />
+        <InputSubmit type='submit' value='Quote' />
+      </form>
+    </>
+
   )
 }
