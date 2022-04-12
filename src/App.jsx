@@ -1,4 +1,5 @@
 import styled from "@emotion/styled"
+import { Form } from "./components/Form"
 import ImagenCripto from './img/imagen-criptos.png'
 
 const Heading = styled.h1`
@@ -43,6 +44,7 @@ function App() {
       <Imagen src={ImagenCripto} alt='Imagen' />
       <div>
         <Heading>Trade Cryptocurrencies Instantly</Heading>
+        <Form />
       </div>
 
     </Container>
