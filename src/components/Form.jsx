@@ -21,7 +21,7 @@ const InputSubmit = styled.input`
 `
 export const Form = () => {
 
-  const [SelectCoins] = useSelectCoins('Chose your coin',coins);
+  const [ coin, SelectCoins ] = useSelectCoins('Chose your coin',coins);
 
   SelectCoins()
   return (
